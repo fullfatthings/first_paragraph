@@ -1,0 +1,4 @@
+name = First Paragraph
+description = Provides a field formatter to allow teasers to show the first paragraph of text.
+core = 7.x
+files[] = tests/first_paragraph.test
