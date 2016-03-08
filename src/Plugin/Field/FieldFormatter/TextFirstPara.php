@@ -26,7 +26,7 @@ class TextFirstPara extends FormatterBase {
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items) {
+  public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = array();
 
     foreach ($items as $delta => $item) {
@@ -38,7 +38,12 @@ class TextFirstPara extends FormatterBase {
       $newdom = new \DOMDocument();
       $newdom->appendChild($newdom->importNode($first_para, TRUE));
 
-      $elements[$delta] = array('#markup' => $newdom->saveHTML());
+      $elements[$delta] = [
+        '#type' => 'processed_text',
+        '#text' => $newdom->saveHTML(),
+        '#format' => $item->format,
+        '#langcode' => $item->getLangcode(),
+      ];
     }
 
     return $elements;
