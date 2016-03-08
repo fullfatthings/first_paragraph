@@ -30,20 +30,35 @@ class TextFirstPara extends FormatterBase {
     $elements = array();
 
     foreach ($items as $delta => $item) {
-      $first_para = Html::load($item->value)
-        ->getElementsByTagName('p')
-        ->item(0)
-        ->cloneNode(TRUE);
-
-      $newdom = new \DOMDocument();
-      $newdom->appendChild($newdom->importNode($first_para, TRUE));
-
-      $elements[$delta] = [
+      $renderable_item = [
         '#type' => 'processed_text',
-        '#text' => $newdom->saveHTML(),
+        '#text' => $item->value,
         '#format' => $item->format,
         '#langcode' => $item->getLangcode(),
       ];
+
+      $rendered = \Drupal::service('renderer')->renderRoot($renderable_item);
+
+
+      $first_para = Html::load($rendered)->getElementsByTagName('p');
+
+      if ($first_para->length > 0) {
+        $newdom = new \DOMDocument();
+        $newdom->appendChild($newdom->importNode(
+          $first_para->item(0)->cloneNode(TRUE), TRUE
+        ));
+        $text = $newdom->saveHTML();
+
+        $elements[$delta] = [
+          '#type' => 'processed_text',
+          '#text' => $text,
+          '#format' => $item->format,
+          '#langcode' => $item->getLangcode(),
+        ];
+      }
+      else {
+        $elements[$delta] = '';
+      }
     }
 
     return $elements;
