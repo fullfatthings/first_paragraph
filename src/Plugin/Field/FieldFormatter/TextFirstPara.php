@@ -1,7 +1,4 @@
-<?php /**
- * @file
- * Contains \Drupal\first_paragraph\Plugin\Field\FieldFormatter\TextFirstPara.
- */
+<?php
 
 namespace Drupal\first_paragraph\Plugin\Field\FieldFormatter;
 
@@ -9,8 +6,9 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Component\Utility\Html;
 
-
 /**
+ * Extracts the first paragraph HTML element out of the content.
+ *
  * @FieldFormatter(
  *  id = "text_first_para",
  *  label = @Translation("First Paragraph"),
@@ -27,7 +25,7 @@ class TextFirstPara extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
 
     foreach ($items as $delta => $item) {
       $renderable_item = [
@@ -38,7 +36,6 @@ class TextFirstPara extends FormatterBase {
       ];
 
       $rendered = \Drupal::service('renderer')->renderRoot($renderable_item);
-
 
       $first_para = Html::load($rendered)->getElementsByTagName('p');
 
