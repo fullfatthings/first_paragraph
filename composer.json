@@ -1,0 +1,15 @@
+{
+    "name": "drupal/first_paragraph",
+    "description": "Provides a field formatter to allow teasers to show the first paragraph of text.",
+    "type": "drupal-module",
+    "require": {
+        "ext-dom": "*"
+    },
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Nicholas Thompson",
+            "email": "nick@fullfatthings.com"
+        }
+    ]
+}

@@ -3,8 +3,8 @@
 namespace Drupal\Tests\first_paragraph\Unit;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Tests the First Paragraph formatter functionality.
@@ -29,16 +29,14 @@ class FirstParagraphTest extends EntityKernelTestBase {
   protected $bundle = 'entity_test';
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  public static $modules = ['first_paragraph'];
+  protected static $modules = ['first_paragraph'];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['field']);
     $this->installEntitySchema('entity_test');
@@ -77,6 +75,7 @@ class FirstParagraphTest extends EntityKernelTestBase {
       "<p>First</p><p>Second</p>" => "<p>First</p>\n",
       "First\nSecond" => "<p>First<br><br />\nSecond</p>\n",
       'test' => "<p>test</p>\n",
+      '<ul><li>Bullet</li></ul><p>First Para</p>' => "<p>First Para</p>\n",
     ];
 
     // Create the entity to be referenced.
@@ -97,10 +96,10 @@ class FirstParagraphTest extends EntityKernelTestBase {
       $build = $entity->get('formatted_text')
         ->view(['type' => 'text_first_para']);
       \Drupal::service('renderer')->renderRoot($build[0]);
-      $this->assertEqual($build[0]['#markup'], $output);
+      $this->assertSame((string) $build[0]['#markup'], $output);
 
       // Check the cache tags.
-      $this->assertEqual(
+      $this->assertEquals(
         $build[0]['#cache']['tags'],
         FilterFormat::load('my_text_format')->getCacheTags(),
         new FormattableMarkup('The @formatter formatter has the expected cache tags when formatting a formatted text field.', ['@formatter' => 'text_first_para'])
