@@ -76,11 +76,11 @@ class TextFirstPara extends FormatterBase {
       $first_para = Html::load($rendered)->getElementsByTagName('p');
 
       if ($first_para->length > 0) {
-        $newdom = new \DOMDocument();
-        $newdom->appendChild($newdom->importNode(
+        $new_dom = new \DOMDocument();
+        $new_dom->appendChild($new_dom->importNode(
           $first_para->item(0)->cloneNode(TRUE), TRUE
         ));
-        $text = $newdom->saveHTML();
+        $text = $new_dom->saveHTML();
 
         $elements[$delta] = [
           '#type' => 'processed_text',
